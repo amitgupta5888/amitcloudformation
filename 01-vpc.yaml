@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+# Creates a VPC in environment
+Resources:
+  TestVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.8/24
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags: 
+        - Key: Name
+          Value: TestVPC
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
