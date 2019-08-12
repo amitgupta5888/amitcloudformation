@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+# Creates  EC2 in environment
+Resources:
+  TestEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0d2692b6acea72ee6
+      InstanceType: t2.micro
+      SecurityGroups:
+        - default
+        - !Ref TestSG
+      Tags: 
+        - Key: Name
+          Value: TestEC2instance
+  TestSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription:  TestSG
+      GroupName: TestSG
+      SecurityGroupIngress: 
+        IpProtocol: TCP
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 10.2.2.2/32
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
