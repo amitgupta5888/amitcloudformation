@@ -1,11 +1,19 @@
 AWSTemplateFormatVersion: "2010-09-09"
 # Creates  EC2 in environment
+Parameters:
+  TypeofInstance:
+    Type: String 
+    Default: t2.micro
+    AllowedValues:
+    - t2.micro
+    - t2.large
+    - m4.large
 Resources:
   TestEC2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-0d2692b6acea72ee6
-      InstanceType: t2.micro
+      InstanceType: !Ref TypeofInstance
       SecurityGroups:
         - default
         - !Ref TestSG
