@@ -1,21 +1,32 @@
 AWSTemplateFormatVersion: "2010-09-09"
-# Creates  EC2 in environment
+# Creates  EC2 in environment without Default VPC
 Parameters:
-  TypeofInstance:
-    Type: String 
-    Default: t2.micro
-    AllowedValues:
-    - t2.micro
-    - t2.large
-    - m4.large
+    TypeofInstance:
+        Type: String 
+        Default: t2.micro
+        AllowedValues:
+        - t2.micro
+        - t2.large
+        - m4.large
+    myvpc:
+        Type: AWS::EC2::VPC::Id
+Mappings:
+    Regionmap:
+        ap-southeast-2:
+            imageid: ami-0dc96254d5535925f
+        ap-southeast-1:
+            imageid: ami-01f7527546b557442
 Resources:
   TestEC2:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0d2692b6acea72ee6
+      ImageId: !FindInMap
+      - Regionmap
+      - !Ref 'AWS::Region'
+      - imageid
       InstanceType: !Ref TypeofInstance
-      SecurityGroups:
-        - default
+      SubnetId: subnet-007c3a27f8f4f740e
+      SecurityGroupIds:
         - !Ref TestSG
       Tags: 
         - Key: Name
@@ -25,6 +36,7 @@ Resources:
     Properties:
       GroupDescription:  TestSG
       GroupName: TestSG
+      VpcId: !Ref myvpc
       SecurityGroupIngress: 
         IpProtocol: TCP
         FromPort: 22

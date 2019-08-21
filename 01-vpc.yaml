@@ -10,4 +10,5 @@ Resources:
       Tags: 
         - Key: Name
           Value: TestVPC
-#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html --> Get resource info
+#https://github.com/awslabs/aws-cloudformation-templates --> Basic AWS CFN templates for refrence

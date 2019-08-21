@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: "2010-09-09"
+# Creates  EC2 in environment without Default VPC
+Parameters:
+    Environment:
+        Description: Dev or prod
+        Type: String
+        Default: dev
+        AllowedValues:
+            - dev
+            - prod
+    myvpc:
+        Type: AWS::EC2::VPC::Id
+Mappings:
+    Regionmap:
+        ap-southeast-2:
+            imageid: ami-0dc96254d5535925f
+        ap-southeast-1:
+            imageid: ami-01f7527546b557442
+    InstanceMap:
+        dev:
+            InstanceType: t2.micro
+        prod:
+            InstanceType: t2.small
+Resources:
+  TestEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap
+        - Regionmap
+        - !Ref 'AWS::Region'
+        - imageid
+      InstanceType: !FindInMap
+        - InstanceMap
+        - !Ref Environment
+        - InstanceType
+      SubnetId: subnet-007c3a27f8f4f740e
+      SecurityGroupIds:
+        - !Ref TestSG
+      Tags: 
+        - Key: Name
+          Value: TestEC2instance
+  TestSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription:  TestSG
+      GroupName: TestSG
+      VpcId: !Ref myvpc
+      SecurityGroupIngress: 
+        IpProtocol: TCP
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 10.2.2.2/32
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html --> Get resource info
+#https://github.com/awslabs/aws-cloudformation-templates --> Basic AWS CFN templates for refrence
